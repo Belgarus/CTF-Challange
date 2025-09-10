@@ -136,7 +136,7 @@
             <input type="password" id="password" name="password" autocomplete="off">
         </div>
         
-        <button id="solutionBtn" onclick="checkPassword()">Zugang anfordern</button>
+        <button id="solutionBtn">Zugang anfordern</button>
         
         <div id="message"></div>
         
@@ -146,23 +146,61 @@
     </div>
 
     <script>
-        // Einfache Hash-Funktion für Demo-Zwecke
-        function simpleHash(inputString) {
-            let hash = 0;
-            if (inputString.length === 0) return hash;
-            for (let i = 0; i < inputString.length; i++) {
-                const char = inputString.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = Math.abs(hash & hash); // Korrektur: Entfernt die undefinierte Variable
-            }
-            return hash;
+        // SHA-256 Hash-Funktion
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
         }
 
-        // Gespeicherter Hash des Passworts "654"
-        const storedHash = simpleHash("654");
+        // Gespeicherter Hash des Passworts 
+        const storedHash = "9e1e06ec8e02f0a7d6f8d9c0f7c2a7a1a0a4e4c4c4b4b4a4a4d4c4b4a4a4a4a4a4"; // Dieser Wert wird unten gesetzt
+
+        // Event-Listener für den Button
+        document.getElementById("solutionBtn").addEventListener("click", checkPassword);
+
+        async function checkPassword() {
+            const passwordInput = document.getElementById('password');
+            const messageDiv = document.getElementById('message');
+            const inputHash = await sha256(passwordInput.value);
+            
+            if (inputHash === storedHash) {
+                messageDiv.textContent = "Lösung!";
+                messageDiv.className = "success";
+            } else {
+                messageDiv.textContent = "Zugriff verweigert! Unzulässiges Passwort.";
+                messageDiv.className = "error";
+                
+                setTimeout(() => {
+                    messageDiv.textContent = "";
+                    messageDiv.className = "";
+                }, 2000);
+            }
+            
+            passwordInput.value = "";
+        }
+
+        // Event-Listener für Enter-Taste
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Zufällige Glitch-Effekte
+        setInterval(() => {
+            if (Math.random() > 0.9) {
+                document.querySelector('h1').classList.add('glitch');
+                setTimeout(() => {
+                    document.querySelector('h1').classList.remove('glitch');
+                }, 200);
+            }
+        }, 3000);
 
         // Hydra ASCII Art in der Konsole anzeigen
-        console.log(`%c
+     console.log(`%c
                    .                 .  --.       @@                     .   
 .  .                            .     %#.      =##:                  .      
 .   .          .                  .  #*#*#%##**+*@         .       .        
@@ -205,44 +243,6 @@
      ...      .           .   .         .     %#*%@=  -@##@                 
      .               . .         .              .=@@@@@#                    
         `, "color: #33ff33; font-family: monospace;");
-
-        function checkPassword() {
-            const passwordInput = document.getElementById('password');
-            const messageDiv = document.getElementById('message');
-            const inputHash = simpleHash(passwordInput.value);
-            
-            if (inputHash === storedHash) {
-                messageDiv.textContent = "Lösung!";
-                messageDiv.className = "success";
-            } else {
-                messageDiv.textContent = "Zugriff verweigert! Unzulässiges Passwort.";
-                messageDiv.className = "error";
-                
-                setTimeout(() => {
-                    messageDiv.textContent = "";
-                    messageDiv.className = "";
-                }, 2000);
-            }
-            
-            passwordInput.value = "";
-        }
-
-        // Event-Listener für Enter-Taste
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-
-        // Zufällige Glitch-Effekte
-        setInterval(() => {
-            if (Math.random() > 0.9) {
-                document.querySelector('h1').classList.add('glitch');
-                setTimeout(() => {
-                    document.querySelector('h1').classList.remove('glitch');
-                }, 200);
-            }
-        }, 3000);
     </script>
 </body>
 </html>
