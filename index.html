@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zugangskontrolle</title>
+    <style>
+        body {
+            background-color: #0c0c0c;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            border: 2px solid #33ff33;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px #33ff33;
+            background-color: #001100;
+        }
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 0;
+            text-shadow: 0 0 5px #33ff33;
+        }
+        .input-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="password"] {
+            background-color: #001a00;
+            color: #33ff33;
+            border: 1px solid #33ff33;
+            padding: 12px;
+            width: calc(100% - 26px);
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+        }
+        button {
+            background-color: #002200;
+            color: #33ff33;
+            border: 1px solid #33ff33;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #33ff33;
+            color: #001100;
+            box-shadow: 0 0 15px #33ff33;
+        }
+        #message {
+            height: 30px;
+            margin-top: 25px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+        }
+        .success {
+            color: #33ff33;
+            animation: blink 1s infinite;
+            text-shadow: 0 0 5px #33ff33;
+        }
+        .error {
+            color: #ff3333;
+            text-shadow: 0 0 5px #ff3333;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        .glitch {
+            animation: glitch 1s linear infinite;
+            position: relative;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            5% { transform: translate(-2px, 2px) }
+            10% { transform: translate(-2px, -2px) }
+            15% { transform: translate(2px, 2px) }
+            20% { transform: translate(2px, -2px) }
+            50% { transform: translate(0) }
+            100% { transform: translate(0) }
+        }
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to bottom, 
+                rgba(51, 255, 51, 0), 
+                rgba(51, 255, 51, 0.8), 
+                rgba(51, 255, 51, 0));
+            animation: scan 4s linear infinite;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="scan-line"></div>
+    <div class="container">
+        <h1 class="glitch">Zugangskontrolle</h1>
+        <p>Bitte geben Sie das Sicherheitspasswort ein:</p>
+        
+        <div class="input-group">
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" name="password" autocomplete="off">
+        </div>
+        
+        <button id="solutionBtn" onclick="checkPassword()">Zugang anfordern</button>
+        
+        <div id="message"></div>
+        
+        <div class="footer">
+            System V4.2 - © 1983 Cyberdyne Systems
+        </div>
+    </div>
+
+    <script>
+        // Einfache Hash-Funktion für Demo-Zwecke
+        function simpleHash(inputString) {
+            let hash = 0;
+            if (inputString.length === 0) return hash;
+            for (let i = 0; i < inputString.length; i++) {
+                const char = inputString.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = Math.abs(hash & hash); // Korrektur: Entfernt die undefinierte Variable
+            }
+            return hash;
+        }
+
+        // Gespeicherter Hash des Passworts "654"
+        const storedHash = simpleHash("654");
+
+        // Hydra ASCII Art in der Konsole anzeigen
+        console.log(`%c
+                   .                 .  --.       @@                     .   
+.  .                            .     %#.      =##:                  .      
+.   .          .                  .  #*#*#%##**+*@         .       .        
+   ... ..     .       .             :%========+#+*=  ..                     
+        .                     .     -+==+++==+.#=+%   .:...:-==:*..        .
+               .                   +#+=======++- :*@  :    .    =+          
+ .      .     . .              *::=++=====+++. .+=*@  ==*%%# ..  #%      .  
+  .               .    ..        @  ++++++=   .-=++@ #*  %==*#*#  -%        
+.          .    . -@-*. ...  .    +     .    +=#.+*@=  =+*%:.*##%%:%#%      
+                +#**+*****#%@@-   .#.@@@%##.###..+*@. ..       *%%::%*%.    
+             @*+=====+++++++*#%@@@.%  @#=-#%#%*.=+#%.#   .  .= ..  #%@@@    
+          %*+==.:=-    ..=++++*%@@@ -@*+-+*-%. :+#@@@%. *..   .   -%%%  =   
+        #*.++-  .  .      ..+++*%@ @    .    ..+*@#     %   ..:   -%%%     .
+      #*+..=+%#:  =*+=++.    +++#%@ # ..:..  .+*%     .+          #%%%.     
+    *    :+  *: .-       *.  =++#%@@.=     :.=*@*     *   .    ..##%%%      
+      ---%@ #-..+         @  =++#%===..  ...=*%     *      .   .##%##+      
+. .        @* =       ..  @..++*%@%....  ..=*@%  =-.  .     ..-###%#@       
+  .        .:*   .        . .++*@#...  . .*#%::#.        .. :#####@@..      
+ .          @. .         =..+++.. ..   ..***%..     ......+###%@*@:*        
+           .@@@ .     .....++......   .*+..     .......-*##%%@@#%.   .      
+           . @@       *...+-......  .=...  .  ......+**%@@*#@ +#            
+ .      .       .  . %...=......  .....:.   ....-+**%###-#@  .              
+  .   .    .  .    .+........................=*+%@*%+@ %#*@@ .     .       .
+          .  .      =...=.................=+++++*%@+*##%%%@- =*             
+ .       .          :....................+++++++++*****#%%######%@:        .
+                    :...................++++++++++********########%@+ .    .
+             .      +...................*+++++++++********########%%%@     .
+  .              . .=...................++++++++++********########%%%%@     
+           .  .      #..................=+++++++++********########%%%%%+    
+                 . .  #...............:...++++++++********###%%%##%%%%%+    
+           ..   .      .*................   :+++++*****#@#.      *%%%%@.  . 
+.     .      .           +:...............     ..=**#@-        .  @%%@      
+            .            .  @+............   . .-%:             .@%%%     . 
+ .        .        ..       *.%#%+****--==%#:     =*#%%%%#*++#%%#%@   . .. .
+                   .       =%@#@:@# *###@#     *#*%@#**#%@@%##%@+  .        
+ .  .   .                  :@@=-- .  @@*@+ ...%##             #*    ..     .
+                               .       -    .%*-            %+*             
+             . .   .                .   ..   ##   .      :@%%+*   .         
+          .   .   .    .         .           %*@ .        @#%%#  .   .      
+     ...      .           .   .         .     %#*%@=  -@##@                 
+     .               . .         .              .=@@@@@#                    
+        `, "color: #33ff33; font-family: monospace;");
+
+        function checkPassword() {
+            const passwordInput = document.getElementById('password');
+            const messageDiv = document.getElementById('message');
+            const inputHash = simpleHash(passwordInput.value);
+            
+            if (inputHash === storedHash) {
+                messageDiv.textContent = "Lösung!";
+                messageDiv.className = "success";
+            } else {
+                messageDiv.textContent = "Zugriff verweigert! Unzulässiges Passwort.";
+                messageDiv.className = "error";
+                
+                setTimeout(() => {
+                    messageDiv.textContent = "";
+                    messageDiv.className = "";
+                }, 2000);
+            }
+            
+            passwordInput.value = "";
+        }
+
+        // Event-Listener für Enter-Taste
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Zufällige Glitch-Effekte
+        setInterval(() => {
+            if (Math.random() > 0.9) {
+                document.querySelector('h1').classList.add('glitch');
+                setTimeout(() => {
+                    document.querySelector('h1').classList.remove('glitch');
+                }, 200);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
