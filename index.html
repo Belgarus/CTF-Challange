@@ -162,6 +162,7 @@
         document.getElementById("solutionBtn").addEventListener("click", checkPassword);
 
         async function checkPassword() {
+            console.log(document.getElementById("password").value()); //? No Output?
             const passwordInput = document.getElementById('password');
             const messageDiv = document.getElementById('message');
             const inputHash = await sha256(passwordInput.value);
@@ -191,7 +192,7 @@
                 checkPassword();
             }
         });
-
+        
         // Zufällige Glitch-Effekte
         setInterval(() => {
             if (Math.random() > 0.9) {
