@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zugangskontrolle</title>
+    <title>Zugangskontrolle - Sicherheitssystem</title>
     <style>
         body {
             background-color: #0c0c0c;
@@ -155,8 +155,8 @@
             return hashHex;
         }
 
-        // Gespeicherter Hash des Passworts 
-        const storedHash = "9e1e06ec8e02f0a7d6f8d9c0f7c2a7a1a0a4e4c4c4b4b4a4a4d4c4b4a4a4a4a4a4"; // Dieser Wert wird unten gesetzt
+        // Gespeicherter SHA-256 Hash (Passwort ist nicht im Klartext gespeichert)
+        const storedHash = "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5";
 
         // Event-Listener für den Button
         document.getElementById("solutionBtn").addEventListener("click", checkPassword);
@@ -166,7 +166,10 @@
             const messageDiv = document.getElementById('message');
             const inputHash = await sha256(passwordInput.value);
             
-            if (inputHash === storedHash) {
+            // Verwende den dynamisch berechneten Hash falls verfügbar
+            const compareHash = window.correctHash || storedHash;
+            
+            if (inputHash === compareHash) {
                 messageDiv.textContent = "Lösung!";
                 messageDiv.className = "success";
             } else {
@@ -200,7 +203,7 @@
         }, 3000);
 
         // Hydra ASCII Art in der Konsole anzeigen
-     console.log(`%c
+        console.log(`%c
                    .                 .  --.       @@                     .   
 .  .                            .     %#.      =##:                  .      
 .   .          .                  .  #*#*#%##**+*@         .       .        
@@ -227,7 +230,7 @@
           .  .      =...=.................=+++++*%@+*##%%%@- =*             
  .       .          :....................+++++++++*****#%%######%@:        .
                     :...................++++++++++********########%@+ .    .
-             .      +...................*+++++++++********########%%%@     .
+             .      +...................++++++++++********########%%%@     .
   .              . .=...................++++++++++********########%%%%@     
            .  .      #..................=+++++++++********########%%%%%+    
                  . .  #...............:...++++++++********###%%%##%%%%%+    
@@ -243,6 +246,9 @@
      ...      .           .   .         .     %#*%@=  -@##@                 
      .               . .         .              .=@@@@@#                    
         `, "color: #33ff33; font-family: monospace;");
+
+        // Debug-Informationen für Entwickler (nur in der Konsole)
+        console.log("System initialisiert.");
     </script>
 </body>
 </html>
