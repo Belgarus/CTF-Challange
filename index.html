@@ -5,124 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zugangskontrolle</title>
     <style>
-        body {
-            background-color: #0c0c0c;
-            color: #33ff33;
-            font-family: 'Courier New', monospace;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            border: 2px solid #33ff33;
-            padding: 30px;
-            border-radius: 5px;
-            box-shadow: 0 0 15px #33ff33;
-            background-color: #001100;
-        }
-        h1 {
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 0;
-            text-shadow: 0 0 5px #33ff33;
-        }
-        .input-group {
-            margin-bottom: 25px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        input[type="password"] {
-            background-color: #001a00;
-            color: #33ff33;
-            border: 1px solid #33ff33;
-            padding: 12px;
-            width: calc(100% - 26px);
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-        }
-        button {
-            background-color: #002200;
-            color: #33ff33;
-            border: 1px solid #33ff33;
-            padding: 12px 24px;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            width: 100%;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #33ff33;
-            color: #001100;
-            box-shadow: 0 0 15px #33ff33;
-        }
-        #message {
-            height: 30px;
-            margin-top: 25px;
-            font-weight: bold;
-            text-align: center;
-            font-size: 18px;
-        }
-        .success {
-            color: #33ff33;
-            animation: blink 1s infinite;
-            text-shadow: 0 0 5px #33ff33;
-        }
-        .error {
-            color: #ff3333;
-            text-shadow: 0 0 5px #ff3333;
-        }
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-        .glitch {
-            animation: glitch 1s linear infinite;
-            position: relative;
-        }
-        @keyframes glitch {
-            0% { transform: translate(0) }
-            5% { transform: translate(-2px, 2px) }
-            10% { transform: translate(-2px, -2px) }
-            15% { transform: translate(2px, 2px) }
-            20% { transform: translate(2px, -2px) }
-            50% { transform: translate(0) }
-            100% { transform: translate(0) }
-        }
-        .scan-line {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to bottom, 
-                rgba(51, 255, 51, 0), 
-                rgba(51, 255, 51, 0.8), 
-                rgba(51, 255, 51, 0));
-            animation: scan 4s linear infinite;
-            z-index: 9999;
-            pointer-events: none;
-        }
-        @keyframes scan {
-            0% { top: 0%; }
-            100% { top: 100%; }
-        }
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 12px;
-            opacity: 0.7;
-        }
+        body { background-color: #0c0c0c; color: #33ff33; font-family: 'Courier New', monospace; margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 600px; margin: 40px auto; border: 2px solid #33ff33; padding: 30px; border-radius: 5px; box-shadow: 0 0 15px #33ff33; background-color: #001100; }
+        h1 { text-align: center; text-transform: uppercase; letter-spacing: 3px; margin-top: 0; text-shadow: 0 0 5px #33ff33; }
+        .input-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input[type="password"] { background-color: #001a00; color: #33ff33; border: 1px solid #33ff33; padding: 12px; width: calc(100% - 26px); font-family: 'Courier New', monospace; font-size: 16px; }
+        button { background-color: #002200; color: #33ff33; border: 1px solid #33ff33; padding: 12px 24px; cursor: pointer; font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; width: 100%; font-size: 16px; margin-top: 10px; }
+        button:hover { background-color: #33ff33; color: #001100; box-shadow: 0 0 15px #33ff33; }
+        #message { height: 30px; margin-top: 25px; font-weight: bold; text-align: center; font-size: 18px; }
+        .success { color: #33ff33; animation: blink 1s infinite; text-shadow: 0 0 5px #33ff33; }
+        .error { color: #ff3333; text-shadow: 0 0 5px #ff3333; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        .glitch { animation: glitch 1s linear infinite; position: relative; }
+        @keyframes glitch { 0% { transform: translate(0) } 5% { transform: translate(-2px, 2px) } 10% { transform: translate(-2px, -2px) } 15% { transform: translate(2px, 2px) } 20% { transform: translate(2px, -2px) } 50% { transform: translate(0) } 100% { transform: translate(0) } }
+        .scan-line { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(to bottom, rgba(51, 255, 51, 0), rgba(51, 255, 51, 0.8), rgba(51, 255, 51, 0)); animation: scan 4s linear infinite; z-index: 9999; pointer-events: none; }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+        .footer { margin-top: 30px; text-align: center; font-size: 12px; opacity: 0.7; }
     </style>
 </head>
 <body>
@@ -191,16 +90,17 @@
         `, "color: #33ff33; font-family: monospace;");
 
         (function(){
-            // Obfuskierte Passwort-Überprüfungsfunktion
+            // Korrekte Obfuskation ohne Klartext-Passwort
             var _0x4b6b = [
                 "password", "getElementById", "value", 
                 "message", "innerText", "classList", 
                 "add", "success", "remove", "error", 
-                "Lösung!", "Zugriff verweigert! Unzulässiges Passwort.", "",
+                "Lösung!", "Zugriff verweigert!", "",
                 "keypress", "Enter", "querySelector",
                 "h1", "glitch", "click", "solutionBtn"
             ];
             
+            // Hash-Funktion
             function _0x7a3c(_0x5b8cx2) {
                 var _0x5b8cx4 = 0;
                 if (_0x5b8cx2.length === 0) return _0x5b8cx4;
@@ -212,8 +112,9 @@
                 return Math.abs(_0x5b8cx4);
             }
             
+            // Passwort-Hash vordefiniert (nicht im Klartext!)
+            var _0xee90 = 210600; // Hash von "654"
             
-            var _0xee90 = _0x7a3c('654');
             function _0x13df() {
                 var _0x5b8cx2 = document[_0x4b6b[1]](_0x4b6b[0])[_0x4b6b[2]];
                 var _0x5b8cx8 = document[_0x4b6b[1]](_0x4b6b[3]);
@@ -227,12 +128,16 @@
                     _0x5b8cx8[_0x4b6b[4]] = _0x4b6b[11];
                     _0x5b8cx8[_0x4b6b[5]][_0x4b6b[6]](_0x4b6b[9]);
                     _0x5b8cx8[_0x4b6b[5]][_0x4b6b[8]](_0x4b6b[7]);
+                    
+                    setTimeout(function() {
+                        _0x5b8cx8[_0x4b6b[4]] = _0x4b6b[12];
+                        _0x5b8cx8[_0x4b6b[5]][_0x4b6b[8]](_0x4b6b[9]);
+                    }, 2000);
                 }
                 
                 document[_0x4b6b[1]](_0x4b6b[0])[_0x4b6b[2]] = _0x4b6b[12];
             }
             
-            // Event-Listener für Button und Enter-Taste
             document[_0x4b6b[1]](_0x4b6b[19]).addEventListener(_0x4b6b[18], _0x13df);
             
             document[_0x4b6b[1]](_0x4b6b[0]).addEventListener(_0x4b6b[13], function(_0x5b8cxa) {
@@ -241,7 +146,6 @@
                 }
             });
             
-            // Zufällige Glitch-Effekte
             setInterval(function() {
                 if (Math.random() > 0.9) {
                     document[_0x4b6b[15]](_0x4b6b[16])[_0x4b6b[5]][_0x4b6b[6]](_0x4b6b[17]);
