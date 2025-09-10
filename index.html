@@ -136,7 +136,7 @@
             <input type="password" id="password" name="password" autocomplete="off">
         </div>
         
-        <button id="solutionBtn" onclick="checkPassword()">Zugang anfordern</button>
+        <button id="solutionBtn">Zugang anfordern</button>
         
         <div id="message"></div>
         
@@ -146,22 +146,6 @@
     </div>
 
     <script>
-        // Einfache Hash-Funktion für Demo-Zwecke
-        function simpleHash(inputString) {
-            let hash = 0;
-            if (inputString.length === 0) return hash;
-            for (let i = 0; i < inputString.length; i++) {
-                const char = inputString.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = Math.abs(hash & hash); // Korrektur: Entfernt die undefinierte Variable
-            }
-            return hash;
-        }
-
-        // Gespeicherter Hash des Passworts "654"
-        const storedHash = simpleHash("654");
-
-        // Hydra ASCII Art in der Konsole anzeigen
         console.log(`%c
                    .                 .  --.       @@                     .   
 .  .                            .     %#.      =##:                  .      
@@ -189,7 +173,7 @@
           .  .      =...=.................=+++++*%@+*##%%%@- =*             
  .       .          :....................+++++++++*****#%%######%@:        .
                     :...................++++++++++********########%@+ .    .
-             .      +...................*+++++++++********########%%%@     .
+             .      +...................++++++++++********########%%%@     .
   .              . .=...................++++++++++********########%%%%@     
            .  .      #..................=+++++++++********########%%%%%+    
                  . .  #...............:...++++++++********###%%%##%%%%%+    
@@ -206,43 +190,72 @@
      .               . .         .              .=@@@@@#                    
         `, "color: #33ff33; font-family: monospace;");
 
-        function checkPassword() {
-            const passwordInput = document.getElementById('password');
-            const messageDiv = document.getElementById('message');
-            const inputHash = simpleHash(passwordInput.value);
+        (function(){
+            // Obfuskierte Passwort-Überprüfungsfunktion
+            var _0x4b6b = [
+                "password", "getElementById", "value", 
+                "message", "innerText", "classList", 
+                "add", "success", "remove", "error", 
+                "Lösung!", "Zugriff verweigert! Unzulässiges Passwort.", "",
+                "keypress", "Enter", "querySelector",
+                "h1", "glitch", "click", "solutionBtn"
+            ];
             
-            if (inputHash === storedHash) {
-                messageDiv.textContent = "Lösung!";
-                messageDiv.className = "success";
-            } else {
-                messageDiv.textContent = "Zugriff verweigert! Unzulässiges Passwort.";
-                messageDiv.className = "error";
+            function _0x7a3c(_0x5b8cx2) {
+                var _0x5b8cx4 = 0;
+                if (_0x5b8cx2.length === 0) return _0x5b8cx4;
+                for (var _0x5b8cx5 = 0; _0x5b8cx5 < _0x5b8cx2.length; _0x5b8cx5++) {
+                    var _0x5b8cx6 = _0x5b8cx2.charCodeAt(_0x5b8cx5);
+                    _0x5b8cx4 = ((_0x5b8cx4 << 5) - _0x5b8cx4) + _0x5b8cx6;
+                    _0x5b8cx4 = _0x5b8cx4 & _0x5b8cx4;
+                }
+                return Math.abs(_0x5b8cx4);
+            }
+            
+            
+            var _0xee90 = _0x7a3c("654");
+            function _0x13df() {
+                var _0x5b8cx2 = document[_0x4b6b[1]](_0x4b6b[0])[_0x4b6b[2]];
+                var _0x5b8cx8 = document[_0x4b6b[1]](_0x4b6b[3]);
+                var _0x5b8cx9 = _0x7a3c(_0x5b8cx2);
                 
-                setTimeout(() => {
-                    messageDiv.textContent = "";
-                    messageDiv.className = "";
-                }, 2000);
+                if (_0x5b8cx9 === _0xee90) {
+                    _0x5b8cx8[_0x4b6b[4]] = _0x4b6b[10];
+                    _0x5b8cx8[_0x4b6b[5]][_0x4b6b[6]](_0x4b6b[7]);
+                    _0x5b8cx8[_0x4b6b[5]][_0x4b6b[8]](_0x4b6b[9]);
+                } else {
+                    _0x5b8cx8[_0x4b6b[4]] = _0x4b6b[11];
+                    _0x5b8cx8[_0x4b6b[5]][_0x4b6b[6]](_0x4b6b[9]);
+                    _0x5b8cx8[_0x4b6b[5]][_0x4b6b[8]](_0x4b6b[7]);
+                    
+                    setTimeout(function() {
+                        _0x5b8cx8[_0x4b6b[4]] = _0x4b6b[12];
+                        _0x5b8cx8[_0x4b6b[5]][_0x4b6b[8]](_0x4b6b[9]);
+                    }, 2000);
+                }
+                
+                document[_0x4b6b[1]](_0x4b6b[0])[_0x4b6b[2]] = _0x4b6b[12];
             }
             
-            passwordInput.value = "";
-        }
-
-        // Event-Listener für Enter-Taste
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-
-        // Zufällige Glitch-Effekte
-        setInterval(() => {
-            if (Math.random() > 0.9) {
-                document.querySelector('h1').classList.add('glitch');
-                setTimeout(() => {
-                    document.querySelector('h1').classList.remove('glitch');
-                }, 200);
-            }
-        }, 3000);
+            // Event-Listener für Button und Enter-Taste
+            document[_0x4b6b[1]](_0x4b6b[19]).addEventListener(_0x4b6b[18], _0x13df);
+            
+            document[_0x4b6b[1]](_0x4b6b[0]).addEventListener(_0x4b6b[13], function(_0x5b8cxa) {
+                if (_0x5b8cxa.key === _0x4b6b[14]) {
+                    _0x13df();
+                }
+            });
+            
+            // Zufällige Glitch-Effekte
+            setInterval(function() {
+                if (Math.random() > 0.9) {
+                    document[_0x4b6b[15]](_0x4b6b[16])[_0x4b6b[5]][_0x4b6b[6]](_0x4b6b[17]);
+                    setTimeout(function() {
+                        document[_0x4b6b[15]](_0x4b6b[16])[_0x4b6b[5]][_0x4b6b[8]](_0x4b6b[17]);
+                    }, 200);
+                }
+            }, 3000);
+        })();
     </script>
 </body>
 </html>
