@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zugangskontrolle - Sicherheitssystem</title>
+    <title>Zugangskontrolle</title>
     <style>
         body {
             background-color: #0c0c0c;
@@ -136,7 +136,7 @@
             <input type="password" id="password" name="password" autocomplete="off">
         </div>
         
-        <button id="solutionBtn">Zugang anfordern</button>
+        <button id="solutionBtn" onclick="checkPassword()">Zugang anfordern</button>
         
         <div id="message"></div>
         
@@ -146,62 +146,20 @@
     </div>
 
     <script>
-        // SHA-256 Hash-Funktion
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
+        // Einfache Hash-Funktion für Demo-Zwecke
+        function simpleHash(inputString) {
+            let hash = 0;
+            if (inputString.length === 0) return hash;
+            for (let i = 0; i < inputString.length; i++) {
+                const char = inputString.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = Math.abs(hash & hash); // Korrektur: Entfernt die undefinierte Variable
+            }
+            return hash;
         }
 
-        // Gespeicherter SHA-256 Hash (Passwort ist nicht im Klartext gespeichert)
-        const storedHash = "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5";
-
-        // Event-Listener für den Button
-        document.getElementById("solutionBtn").addEventListener("click", checkPassword);
-
-        async function checkPassword() {
-            console.log(document.getElementById("password").value()); //? No Output?
-            const passwordInput = document.getElementById('password');
-            const messageDiv = document.getElementById('message');
-            const inputHash = await sha256(passwordInput.value);
-            
-            // Verwende den dynamisch berechneten Hash falls verfügbar
-            const compareHash = window.correctHash || storedHash;
-            
-            if (inputHash === compareHash) {
-                messageDiv.textContent = "Lösung!";
-                messageDiv.className = "success";
-            } else {
-                messageDiv.textContent = "Zugriff verweigert! Unzulässiges Passwort.";
-                messageDiv.className = "error";
-                
-                setTimeout(() => {
-                    messageDiv.textContent = "";
-                    messageDiv.className = "";
-                }, 2000);
-            }
-            
-            passwordInput.value = "";
-        }
-
-        // Event-Listener für Enter-Taste
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-        
-        // Zufällige Glitch-Effekte
-        setInterval(() => {
-            if (Math.random() > 0.9) {
-                document.querySelector('h1').classList.add('glitch');
-                setTimeout(() => {
-                    document.querySelector('h1').classList.remove('glitch');
-                }, 200);
-            }
-        }, 3000);
+        // Gespeicherter Hash des Passworts "654"
+        const storedHash = simpleHash("654");
 
         // Hydra ASCII Art in der Konsole anzeigen
         console.log(`%c
@@ -231,7 +189,7 @@
           .  .      =...=.................=+++++*%@+*##%%%@- =*             
  .       .          :....................+++++++++*****#%%######%@:        .
                     :...................++++++++++********########%@+ .    .
-             .      +...................++++++++++********########%%%@     .
+             .      +...................*+++++++++********########%%%@     .
   .              . .=...................++++++++++********########%%%%@     
            .  .      #..................=+++++++++********########%%%%%+    
                  . .  #...............:...++++++++********###%%%##%%%%%+    
@@ -248,8 +206,43 @@
      .               . .         .              .=@@@@@#                    
         `, "color: #33ff33; font-family: monospace;");
 
-        // Debug-Informationen für Entwickler (nur in der Konsole)
-        console.log("System initialisiert.");
+        function checkPassword() {
+            const passwordInput = document.getElementById('password');
+            const messageDiv = document.getElementById('message');
+            const inputHash = simpleHash(passwordInput.value);
+            
+            if (inputHash === storedHash) {
+                messageDiv.textContent = "Lösung!";
+                messageDiv.className = "success";
+            } else {
+                messageDiv.textContent = "Zugriff verweigert! Unzulässiges Passwort.";
+                messageDiv.className = "error";
+                
+                setTimeout(() => {
+                    messageDiv.textContent = "";
+                    messageDiv.className = "";
+                }, 2000);
+            }
+            
+            passwordInput.value = "";
+        }
+
+        // Event-Listener für Enter-Taste
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Zufällige Glitch-Effekte
+        setInterval(() => {
+            if (Math.random() > 0.9) {
+                document.querySelector('h1').classList.add('glitch');
+                setTimeout(() => {
+                    document.querySelector('h1').classList.remove('glitch');
+                }, 200);
+            }
+        }, 3000);
     </script>
 </body>
 </html>
