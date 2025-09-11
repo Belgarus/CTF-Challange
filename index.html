@@ -143,6 +143,45 @@
     </div>
 
     <script>
+        let accessGranted = false;
+        const random = Math.floor(Math.random() * (500 - 100 + 1)) + 100;
+        function checkPassword() {
+            if (accessGranted) return;
+            
+            const passwordInput = document.getElementById('password');
+            const messageDiv = document.getElementById('message');
+            const inputValue = passwordInput.value;
+            
+            // Einfacher String-Vergleich
+            if (inputValue === `${random}`) {
+                messageDiv.textContent = "Password Challenge2: sudo_Make_Me_Sandwich";
+                messageDiv.className = "success";
+                accessGranted = true;
+                
+                // Deaktiviere Eingabefelder nach erfolgreicher Eingabe
+                passwordInput.disabled = true;
+                document.getElementById('solutionBtn').disabled = true;
+                
+                // Stoppe Glitch-Animationen  und scan
+                document.querySelector('h1').classList.remove('glitch');
+                document.querySelector('.scan-line').style.animation = 'none';
+                
+            } else {
+                messageDiv.textContent = "Zugriff verweigert! Unzulässiges Passwort.";
+                messageDiv.className = "error";
+            }
+            passwordInput.value = "";
+        }
+        document.getElementById('solutionBtn').addEventListener('click', checkPassword)
+        // Zufällige Glitch-Effekte
+        setInterval(() => {
+            if (Math.random() > 0.9 && !accessGranted) {
+                document.querySelector('h1').classList.add('glitch');
+                setTimeout(() => {
+                    document.querySelector('h1').classList.remove('glitch');
+                }, 200);
+            }
+        }, 3000);
         console.log(`%c
                                         --.       @@                         
                                       %#.      =##:                        
@@ -186,46 +225,12 @@
                                               %#*%@=  -@##@                 
                                                 .=@@@@@#                    
         `, "color: #33ff33; font-family: monospace;");
-        
-        let accessGranted = false;
-        const random = Math.floor(Math.random() * (111 - 1 + 1)) + 1;
-        function checkPassword() {
-            if (accessGranted) return;
-            
-            const passwordInput = document.getElementById('password');
-            const messageDiv = document.getElementById('message');
-            const inputValue = passwordInput.value;
-            
-            // Einfacher String-Vergleich
-            if (inputValue === `${random}`) {
-                messageDiv.textContent = "Lösung!";
-                messageDiv.className = "success";
-                accessGranted = true;
-                
-                // Deaktiviere Eingabefelder nach erfolgreicher Eingabe
-                passwordInput.disabled = true;
-                document.getElementById('solutionBtn').disabled = true;
-                
-                // Stoppe Glitch-Animationen  und scan
-                document.querySelector('h1').classList.remove('glitch');
-                document.querySelector('.scan-line').style.animation = 'none';
-                
-            } else {
-                messageDiv.textContent = "Zugriff verweigert! Unzulässiges Passwort.";
-                messageDiv.className = "error";
-            }
-            passwordInput.value = "";
-        }
-        document.getElementById('solutionBtn').addEventListener('click', checkPassword)
-        // Zufällige Glitch-Effekte
-        setInterval(() => {
-            if (Math.random() > 0.9 && !accessGranted) {
-                document.querySelector('h1').classList.add('glitch');
-                setTimeout(() => {
-                    document.querySelector('h1').classList.remove('glitch');
-                }, 200);
-            }
-        }, 3000);
+
+const group = document.querySelector('.input-group');
+const button = document.getElementById('solutionBtn');
+console.log("Hinweis:")
+console.log((group ? group.outerHTML : '') + '\n' + (button ? button.outerHTML : ''));
+
     </script>
 </body>
 </html>
