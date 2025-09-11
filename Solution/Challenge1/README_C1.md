@@ -9,6 +9,6 @@
 - Nutze JavaScript, um an den Code zu gelangen
 
 # Hinweise
-- Der Code liegt zwischen 1 und 500 (es werden nur ganze Zahlen verwendet)
+- Der Code liegt zwischen 161 und 9999 (es werden nur ganze Zahlen verwendet)
 - Sobald Sie den Code erraten haben, wird jeglicher weitere Input ignoriert und das Passwort für die nächste Challenge angezeigt
 
