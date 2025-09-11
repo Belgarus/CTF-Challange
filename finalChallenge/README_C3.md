@@ -1,4 +1,9 @@
 # Hinweis
- - finde die start. Dateien imystem um den Arduino Code hochzuladen und auszuführen
- -die start. Dateien sind ausführbare bash skripte (./<Dateiname>)
+ - Finde die **start.** Dateien im System um den Arduino Code hochzuladen und auszuführen 
+ - Die **start.** Dateien sind ausführbare bash skripte (bash ./$Dateiname)
+
+# Regel
+ - Benutze nicht tree
+
+Wieso? - So is es halt net gedacht. 
 
