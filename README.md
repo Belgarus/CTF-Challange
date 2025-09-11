@@ -1,4 +1,4 @@
-# RaspberryPi Mini-CTF: "LED-Psychose"
+# Mini-CTF: "LED-Psychose"
 
 Willkommen! Du wirst 3 Challenges ausgesetzt bestehe alle um die RGB zum leuchten zu bringen. 
 
