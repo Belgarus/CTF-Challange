@@ -1,0 +1,2 @@
+echo "wrong directory"
+
